@@ -1,0 +1,36 @@
+---
+- name: Get EFS details
+  efs_facts:
+    tags:
+      "Name": "{{ efs_name }}"
+  register: efs
+
+- name: Print EFS id
+  debug:
+    msg: "EFS id : {{ efs.ansible_facts.efs.0.file_system_id }}"
+
+- name: Store EFS id in fact
+  set_fact:
+    file_system_id: "{{ efs.ansible_facts.efs.0.file_system_id }}"
+
+- name: Start EFS backup job
+  command: >
+    aws backup start-backup-job --backup-vault-name {{ backup_vault_name }} --resource-arn arn:aws:elasticfilesystem:{{ region }}:{{ account_id }}:file-system/{{ file_system_id }} --iam-role-arn arn:aws:iam::{{ account_id }}:role/service-role/{{ backup_service_role }}
+  changed_when: false
+  register: aws_efs_backup_job
+
+- name: Print EFS Backup job id
+  debug:
+    msg: "EFS backup job id : {{ (aws_efs_backup_job.stdout|from_json)['BackupJobId'] }}"
+
+- name: Store EFS Backup job id in fact
+  set_fact:
+    efs_backup_job_id: "{{ (aws_efs_backup_job.stdout|from_json)['BackupJobId'] }}"
+
+- name: Wait until the EFS Backup job is completed
+  command: >
+    aws backup describe-backup-job --backup-job-id {{ efs_backup_job_id }}
+  register: efs_backup_job_details
+  until: (efs_backup_job_details.stdout|from_json)['State'] == "COMPLETED" or (efs_backup_job_details.stdout|from_json)['State'] == "FAILED" or (efs_backup_job_details.stdout|from_json)['State'] == "ABORTED" or (efs_backup_job_details.stdout|from_json)['State'] == "EXPIRED"
+  delay: 10
+  retries: 10

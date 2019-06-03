@@ -1,0 +1,12 @@
+---
+- name: Copy SSH key to Bastian EC2 instance
+  aws_s3:
+    bucket: <bucket_name>
+    object: <path_to_ssh_key/key_name.pem>
+    dest: "{{ ssh_key_local_path }}"
+    mode: get
+
+- name: Change key mode to 600
+  file:
+    path: "{{ ssh_key_local_path }}"
+    mode: 0600

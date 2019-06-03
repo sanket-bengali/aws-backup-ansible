@@ -1,0 +1,6 @@
+---
+name: Get SSH key from S3 bucket
+vars_files:
+  - vars/main.yaml
+tasks:
+  - include: tasks/main.yaml

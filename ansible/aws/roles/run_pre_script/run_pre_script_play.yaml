@@ -1,0 +1,6 @@
+---
+name: Run pre-script on MY-APP EC2 instance
+vars_files:
+  - vars/main.yaml
+tasks:
+  - include: tasks/main.yaml

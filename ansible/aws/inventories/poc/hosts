@@ -1,0 +1,9 @@
+[bastian]
+localhost ansible_connection=local ansible_python_interpreter=python
+localhost_efs_backup ansible_connection=local ansible_python_interpreter=python
+localhost_rds_backup ansible_connection=local ansible_python_interpreter=python
+localhost_ec2_backup ansible_connection=local ansible_python_interpreter=python
+my-app-ec2-host ansible_host=<ec2_public_ip> ansible_connection=ssh ansible_user=<ec2-user> ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[my_app]
+neo4j-ec2-host ansible_host=<neo4j_ec2_public_ip> ansible_connection=ssh ansible_user=<ubuntu> ansible_ssh_common_args='-o StrictHostKeyChecking=no'

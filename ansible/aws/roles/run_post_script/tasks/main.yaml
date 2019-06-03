@@ -1,0 +1,10 @@
+---
+- name: Run post-script on EC2 instance
+  service: name=httpd state=started
+  become: yes
+  become_method: sudo
+  register: post_script_output
+
+- name: Print post-script output
+  debug:
+    msg: "HTTPD service status : {{ post_script_output.state }}"

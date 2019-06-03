@@ -1,0 +1,5 @@
+---
+efs_name: "my-app-efs-name"
+
+backup_service_role: "AWSBackupDefaultServiceRole"
+backup_vault_name: "efs-backup-vault-name"

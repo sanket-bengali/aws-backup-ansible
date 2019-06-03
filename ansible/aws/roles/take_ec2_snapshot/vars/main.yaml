@@ -1,0 +1,3 @@
+---
+ec2_instance_name: "my-app-ec2-instance-name"
+device_name: "ec2_device_name"

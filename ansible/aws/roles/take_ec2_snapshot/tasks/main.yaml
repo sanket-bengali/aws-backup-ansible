@@ -1,0 +1,20 @@
+---
+- name: Gather EC2 facts
+  ec2_instance_facts:
+    filters:
+      "tag:Name": "{{ ec2_instance_name }}"
+  register: instances
+
+- name: Print Instance Id
+  debug:
+    msg: "Instance : {{ instances.instances.0.instance_id }}"
+
+- name: Store Instance Id in fact
+  set_fact:
+    instance_id: "{{ instances.instances.0.instance_id }}"
+
+- name: Create Snapshot of volume mounted on device_name attached to instance_id
+  ec2_snapshot:
+    region: "{{ region }}"
+    instance_id: "{{ instance_id }}"
+    device_name: "{{ device_name }}"

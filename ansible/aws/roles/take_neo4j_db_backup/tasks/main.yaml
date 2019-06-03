@@ -1,0 +1,20 @@
+---
+- name: Get time from the system
+  shell: "date +%Y-%m-%d-%H-%M-%S"
+  register: current_time
+
+- name: Store time stdout in fact
+  set_fact:
+    backup_name: "{{ backup_name }}-{{ current_time.stdout }}"
+
+- name: Create Neo4j DB backup
+  command: >
+    neo4j-admin backup --backup-dir={{ backup_dir }} --name={{ backup_name }}
+  changed_when: true
+  become: yes
+  become_method: sudo
+  register: neo4j_db_backup_output
+
+- name: Print Neo4j DB backup output
+  debug:
+    msg: "Neo4j DB backup output : {{ neo4j_db_backup_output.stdout }}"

@@ -1,0 +1,6 @@
+---
+name: MY-APP Postgres DB snapshot on AWS
+var_files:
+  - vars/main.yaml
+tasks:
+  - include: tasks/main.yaml

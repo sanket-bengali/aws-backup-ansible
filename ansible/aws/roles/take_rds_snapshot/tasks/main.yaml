@@ -1,0 +1,17 @@
+---
+- name: Get time from the system
+  shell: "date +%Y-%m-%d-%H-%M-%S"
+  register: current_time
+
+- name: Store time stdout in fact
+  set_fact:
+    current_time: "{{ current_time.stdout }}"
+
+- name: Create Postgres DB snapshot and wait for it to become available
+  rds:
+    command: snapshot
+    region: "{{ region }}"
+    instance_name: "{{ pgsql_db_instance_name }}"
+    snapshot: "{{ pgsql_db_instance_name }}-{{ current_time }}"
+    wait: yes
+    wait_timeout: 600

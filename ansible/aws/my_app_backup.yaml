@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  gather_facts: False
+  roles:
+    - role: get_ssh_key
+
+- hosts: my-app-ec2-host
+  gather_facts: False
+  roles:
+    - role: run_pre_script
+
+- hosts: my_app:bastian
+  gather_facts: False
+  strategy: free
+  tasks:
+    - include_role:
+        name: take_rds_snapshot
+      when: "inventory_hostname == 'localhost_rds_backup' in groups['bastian']"
+    - include_role:
+        name: take_efs_backup
+      when: "inventory_hostname == 'localhost_efs_backup' in groups['bastian']"
+    - include_role: 
+        name: take_ec2_snapshot
+      when: "inventory_hostname == 'localhost_ec2_backup' in groups['bastian']"
+    - include_role: 
+        name: take_neo4j_db_backup
+      when: "inventory_hostname == 'neo4j-ec2-host' in groups['my_app']"
+
+- hosts: my-app-ec2-host
+  gather_facts: False
+  roles:
+    - role: run_post_script
+

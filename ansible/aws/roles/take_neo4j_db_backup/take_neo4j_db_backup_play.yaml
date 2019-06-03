@@ -1,0 +1,6 @@
+---
+name: MY-APP Neo4j DB backup
+var_files:
+  - vars/main.yaml
+tasks:
+  - include: tasks/main.yaml
