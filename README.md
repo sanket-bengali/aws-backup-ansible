@@ -43,9 +43,9 @@ Each role has its own vars (can be changed as needed) and tasks directories ment
 
 #### NOTE : Running these playbooks uses AWS services and creates Backup resources, which could add cost as per AWS pricing.
 
-1. Clone this repository : git clone https://github.com/sanket-bengali/aws-backup-ansible.git
+1. Clone this repository : ```git clone https://github.com/sanket-bengali/aws-backup-ansible.git```
 
-2. Go to the playbook directory : cd /path/to/repository/ansible/aws/
+2. Go to the playbook directory : ```cd /path/to/repository/ansible/aws/```
 
 3. Update inventory files variables
 
@@ -79,7 +79,7 @@ Each role has its own vars (can be changed as needed) and tasks directories ment
    
    -> In "take_neo4j_db_backup/vars/main.yaml" : "/home/ubuntu/<neo4j_backup_dir>"
 
-5. Run the playbook : ansible-playbook my_app_backup.yaml -i inventories/poc/hosts
+5. Run the playbook : ```ansible-playbook my_app_backup.yaml -i inventories/poc/hosts```
 
 ## More information
 
